@@ -50,6 +50,28 @@ void split_buffer(ssh *header)
 	}
 }
 /**
+ * check_exit - check if the secon argument passed to exit command is a string
+ * with no digits
+ * @token: second argument of the exit command
+ * Return: 0 if the string have only digits or 1 if not
+ */
+int check_exit(char *token)
+{
+	int i = 0;
+
+	if (token[i] == '-')
+		i++;
+	while (token[i])
+	{
+		if (token[i] >= '0' && token[i] <= '9')
+			i++;
+		else
+			return (1);
+	}
+
+	return (0);
+}
+/**
  * exit_ - finction with validation exit.
  * @header: take arguments structure.
  * @aux: take auxiliar pointer array.
@@ -59,20 +81,20 @@ void split_buffer(ssh *header)
 int exit_(ssh *header, char *aux, char **aux2)
 {
 	char **token = NULL, *copy = NULL;
-	int EXIT_STATUS = 0;
+	int EXIT_STATUS = 0, flag_char = 0;
 
 	copy = str_cpy(copy, header->buffer, str_len(header->buffer));
 	token = str_tok(copy, " \n\t\r\b\v\f");
-	if (token[1] == NULL)
-		EXIT_STATUS = 0;
-	else
+	if (token[1]) /*check if token 1 is a string with no digits */
 	{
+		flag_char = check_exit(token[1]);
 		EXIT_STATUS = _atoi(token[1]);
-		if (EXIT_STATUS < 0)
+		if (EXIT_STATUS < 0 || flag_char == 1)
 		{
 			printf("%s: exit: Illegal number: %i\n",
 				header->argv[0], EXIT_STATUS);
 			free_malloc(token), free(copy);
+			header->flag_exit = 1;
 			return (0);
 		}
 	}
