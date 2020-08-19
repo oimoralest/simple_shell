@@ -64,6 +64,7 @@ ssh *set_struct(ssh *header, char **argv, char **envp)
 	header->OLD_WD = NULL;
 	header->head = NULL;
 	header->head_cmd = NULL;
+	header->flag_exit = 0;
 	return (header);
 }
 /**
@@ -107,7 +108,15 @@ int main(int argc, char **argv, char **envp)
 	free_PWD(header);
 	free_listint(header->head);
 	free_commands(header);
-	free(header);
 
-	return (EXIT_SUCCESS);
+	if (header->flag_exit == 1)
+	{
+		free(header);
+		return (2);
+	}
+	else
+	{
+		free(header);
+		return (EXIT_SUCCESS);
+	}
 }
