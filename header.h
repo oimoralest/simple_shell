@@ -24,6 +24,7 @@ extern int HANDLE_SIGNAL;
  * @OLD_WD: OLD WORKING DIRECTORY
  * @head: pointer to the head node structure.
  * @head_cmd: pointer to the head node of the command's list
+ * @flag_exit: a flag for the exit command
  */
 typedef struct simple_shell
 {
@@ -34,6 +35,7 @@ typedef struct simple_shell
 	char *OLD_WD;
 	struct node *head;
 	struct commands *head_cmd;
+	int flag_exit;
 } ssh;
 /**
  * struct node - structure list nodes.
