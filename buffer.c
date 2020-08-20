@@ -78,13 +78,10 @@ int check_exit(char *token)
  * @aux2: take auxiliar pointer array2.
  * Return: integer 0 or exit success.
  */
-int exit_(ssh *header, char *aux, char **aux2)
+int exit_(char *copy, char **token, ssh *header)
 {
-	char **token = NULL, *copy = NULL;
 	int EXIT_STATUS = 0, flag_char = 0;
 
-	copy = str_cpy(copy, header->buffer, str_len(header->buffer));
-	token = str_tok(copy, " \n\t\r\b\v\f");
 	if (token[1])
 	{
 		EXIT_STATUS = _atoi(token[1]);
@@ -100,7 +97,7 @@ int exit_(ssh *header, char *aux, char **aux2)
 	free(header->buffer), free_malloc(token), free(copy);
 	free_malloc(header->arguments), free(header->OLD_WD), free_PWD(header);
 	free_listint(header->head), free_commands(header);
-	free(aux), free_malloc(aux2), free(header);
+	free(copy), free_malloc(token), free(header);
 	exit(EXIT_STATUS);
 }
 /**
@@ -108,19 +105,17 @@ int exit_(ssh *header, char *aux, char **aux2)
  * @header: pointer structure values.
  * Return: 0 success.
  */
-int _env(ssh *header)
+int _env(char *copy, char **token, ssh *header)
 {
-	char **token = NULL, *copy = NULL;
 	int i = 0;
 
-	copy = str_cpy(copy, header->buffer, str_len(header->buffer));
-	token = str_tok(copy, " \n\t\r\b\v\f");
+	(void)copy;
+	(void)token;
 	if (token[1] == NULL)
 	{
 		while (header->envp[i])
 			_printf("%s\n", header->envp[i]), i++;
 	}
-	free_malloc(token), free(copy);
 
 	return (0);
 }
@@ -149,7 +144,7 @@ int check_buffer(char *buffer, ssh *header)
 	{
 		if (!str_cmp(identifiers[i].comp, token[0], str_len(token[0])))
 		{
-			aux = identifiers[i].function_int(header, copy, token);
+			aux = identifiers[i].function_int(copy, token, header);
 			break;
 		}
 		i++;

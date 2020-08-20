@@ -59,7 +59,7 @@ char *_strchr(char *str, char c)
  * @token: double pointer take token.
  * Return: 0 on success or -1 error.
  */
-int _unsetenv(ssh *header, char *copy, char **token)
+int _unsetenv(char *copy, char **token, ssh *header)
 {
 	char **env = NULL, *name = token[1];
 	node *aux = header->head;
@@ -71,7 +71,7 @@ int _unsetenv(ssh *header, char *copy, char **token)
 		errno = EINVAL;
 		return (-1);
 	}
-	len = strlen(name);
+	len = str_len(name);
 	env = environ;
 	while (*env != NULL)
 	{

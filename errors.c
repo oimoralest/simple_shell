@@ -6,7 +6,7 @@
  */
 void _error(char *s)
 {
-	write(STDERR_FILENO, s, strlen(s));
+	write(STDERR_FILENO, s, str_len(s));
 	exit(EXIT_FAILURE);
 }
 /**

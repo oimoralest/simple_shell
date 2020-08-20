@@ -25,7 +25,7 @@ int compare_str(char *str, char *PATH)
  */
 char *add_argv(char *argv, char *str_tok) /* argv = pwd buffer = "+/ls -la" */
 {
-	int i = 0, j = 0, len1 = strlen(argv), len2 = strlen(str_tok);
+	int i = 0, j = 0, len1 = str_len(argv), len2 = str_len(str_tok);
 	char *buff;
 
 	buff = malloc(sizeof(char *) * (len1 + len2 + 2));
@@ -119,7 +119,7 @@ char *copy_strtok(char *aux_strtok)
 char *_PATH(char *arguments, char **envp)
 {
 	int aux_stat_2 = 0, aux_comp = 0, number_env = 0, i = 0;
-	char *PATH = "PATH", *aux_stat = NULL, **aux_strtok = NULL;
+	char *PATH = "PATH=", *aux_stat = NULL, **aux_strtok = NULL;
 	char **env = NULL;
 
 	number_env = count_env(envp);

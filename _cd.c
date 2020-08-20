@@ -77,7 +77,7 @@ void print_error(char *str, int aux)
  * @token: array of pointers to string which is the buffer split it
  * Return: NULL or OLD_WD.
  */
-int _cd(ssh *header, char *copy, char **token)
+int _cd(char *copy, char **token, ssh *header)
 {
 	char NEW_WD[LEN_BUFFER] = "\0", *OLD_WD = header->OLD_WD, *PWD = NULL;
 	char *HOME = NULL, **temp = NULL;
@@ -86,7 +86,7 @@ int _cd(ssh *header, char *copy, char **token)
 	(void)copy;
 	if (token[1] == NULL)
 	{
-		temp = get_dir(header->envp, "HOME");
+		temp = get_dir(header->envp, "HOME=");
 		HOME = temp[1];
 		aux_chdir = chdir(HOME);
 		print_error(header->argv[0], aux_chdir);
