@@ -97,7 +97,7 @@ int _execve(ssh *header)
 			}
 		}
 		aux = aux->next, i++, status_wait = aux_check == 0 ? 0 :
-		WEXITSTATUS(status_wait);
+		aux_check == 2 ? 2 : WEXITSTATUS(status_wait);
 	}
-	return (status_wait == 2 ? 127 : status_wait);
+	return (status_wait == 2 ? aux_check == 2 ? 2 : 127 : status_wait);
 }

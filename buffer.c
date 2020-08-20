@@ -89,12 +89,12 @@ int exit_(ssh *header, char *aux, char **aux2)
 	{
 		EXIT_STATUS = _atoi(token[1]);
 		flag_char = check_exit(token[1]);
-		if (flag_char == 1)
+		if (flag_char == 1 || EXIT_STATUS < 0)
 		{
 			_printf("%s: exit: Illegal number: %s\n",
 				header->argv[0], token[1]);
 			free_malloc(token), free(copy);
-			return (0);
+			return (2);
 		}
 	}
 	free(header->buffer), free_malloc(token), free(copy);
