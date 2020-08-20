@@ -77,7 +77,7 @@ void owrenv(ssh *header, char *name, char *nvar)
 	envnew = malloc(sizeof(char) * (str_len(name) + str_len(nvar) + 2));
 	if (!envnew)
 	{
-		printf("Error: can not allocate memory\n");
+		_printf("Error: can not allocate memory\n");
 		exit(EXIT_FAILURE);
 	}
 	envnew[0] = '\0';

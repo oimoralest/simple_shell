@@ -35,7 +35,7 @@ int _envset(ssh *header)
 	len = str_len(name), len2 = str_len(nvar);
 	if (nvar == NULL || name == NULL) /* setenv hola=mundo */
 	{
-		printf("Error usage");
+		_printf("Error usage");
 		return (0);
 	}
 	if (_searchenv(name) == NULL)
@@ -44,7 +44,7 @@ int _envset(ssh *header)
 		if (!envnew)
 		{
 			free(envnew), free_malloc(tok), free(copy);
-			printf("Error: can not allocate memory\n");
+			_printf("Error: can not allocate memory\n");
 			exit(EXIT_FAILURE);
 		}
 		if (!addenv(header, name, nvar, envnew))

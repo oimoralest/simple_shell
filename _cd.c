@@ -22,7 +22,6 @@ char **get_dir(char **envp, char *variable)
 		}
 		i++;
 	}
-
 	return (NULL);
 }
 /**
@@ -96,7 +95,7 @@ int _cd(ssh *header, char *copy, char **token)
 	{
 		if (OLD_WD == NULL)
 		{
-			printf("%s: cd: OLDPWD not set\n", header->argv[0]);
+			_printf("%s: cd: OLDPWD not set\n", header->argv[0]);
 			header->OLD_WD = NULL;
 		}
 		else

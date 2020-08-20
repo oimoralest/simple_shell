@@ -32,7 +32,7 @@ char *add_argv(char *argv, char *str_tok) /* argv = pwd buffer = "+/ls -la" */
 	if (!buff)
 	{
 		free(buff);
-		printf("Error: can not allocate memory\n");
+		_printf("Error: can not allocate memory\n");
 		exit(EXIT_FAILURE);
 	}
 	while (str_tok[i])
@@ -77,7 +77,7 @@ void cpy_dptr(char **dest, char **from)
 		if (!dest[i])
 		{
 			free_malloc(dest);
-			printf("Error: can not allocate memory\n");
+			_printf("Error: can not allocate memory\n");
 			exit(EXIT_FAILURE);
 		}
 		strcpy(dest[i], from[i]);
@@ -99,7 +99,7 @@ char *copy_strtok(char *aux_strtok)
 	aux = malloc(sizeof(char) * (len + 1));
 	if (!aux)
 	{
-		printf("Error: can not allocate memory\n");
+		_printf("Error: can not allocate memory\n");
 		exit(EXIT_FAILURE);
 	}
 	while (i < len)
@@ -127,7 +127,7 @@ char *_PATH(char *arguments, char **envp)
 	if (!env)
 	{
 		free_malloc(env);
-		printf("Error: can not allocate memory\n");
+		_printf("Error: can not allocate memory\n");
 		exit(EXIT_FAILURE);
 	}
 	while (i < number_env + 1)

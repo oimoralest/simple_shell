@@ -10,6 +10,9 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <signal.h>
+#include <stdarg.h>
+#include <limits.h>
+
 
 #define LEN_BUFFER 1024
 extern char **environ;
@@ -35,7 +38,6 @@ typedef struct simple_shell
 	char *OLD_WD;
 	struct node *head;
 	struct commands *head_cmd;
-	int flag_exit;
 } ssh;
 /**
  * struct node - structure list nodes.
@@ -69,6 +71,16 @@ typedef struct commands
 	char **split_command;
 	struct commands *next;
 } commands;
+/**
+ * struct id_function - structure of functions and id
+ * @id: identifiers of conversion
+ * @f:function pointer of id
+ */
+typedef struct id_function
+{
+	char id;
+	int (*f)();
+} function_t;
 
 char **str_tok(char *buffer, char *delimiter);
 char *str_cpy(char *dest, char *src, int bytes);
@@ -98,14 +110,14 @@ int addenv(ssh *header, char *name, char *nvar, char *envnew);
 void owrenv(ssh *header, char *name, char *nvar);
 void set_buffer(char *buffer, ssize_t aux_read);
 void split_buffer(ssh *header);
-void _execve(ssh *header);
+int _execve(ssh *header);
 int delete_nodein(node **head, unsigned int index);
 commands *add_node_end(commands **head, char **command);
 int exit_(ssh *header, char *aux, char **aux2);
 int _env(ssh *header);
 node *add_node(node **head, char *setenv);
 void handle_signal(int _signal);
-void _prompt(ssh *header);
+int _prompt(ssh *header);
 ssh *set_struct(ssh *header, char **argv, char **envp);
 int cmp_char_str(char _char, char *_str);
 int count_words(char *str, char *delimiter);
@@ -114,5 +126,16 @@ void copy_word(char *str, char *str_tok, int flag, char *delimiter);
 char **get_dir(char **envp, char *variable);
 void copy_cwd(char **envp, char *NEW_WD, int length, ssh *header);
 char *identify_directory(char *to_search, char **envp);
-
+int _printf(const char *format, ...);
+int _putchar(char c);
+int _printf_c(va_list flist);
+int _printf_s(va_list flist);
+int print_number(va_list flist);
+int _print_b(va_list flist);
+int _print_o(va_list flist);
+int _print_u(va_list flist);
+int _print_x(va_list flist);
+char exchange_x(unsigned int n);
+int _print_X(va_list flist);
+char exchange_X(unsigned int n);
 #endif

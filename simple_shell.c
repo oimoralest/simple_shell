@@ -9,7 +9,7 @@ void handle_signal(int _signal)
 	int HANDLE_SIGNAL = 1;
 
 	(void)HANDLE_SIGNAL;
-	if (_signal != SIGINT)
+	if (_signal != SIGINT && _signal != SIGTSTP)
 		HANDLE_SIGNAL = 0;
 	else
 		write(STDOUT_FILENO, "\n$ ", 3);
@@ -19,12 +19,12 @@ void handle_signal(int _signal)
  * @header: struct pointer.
  * Return: nothing void.
  */
-void _prompt(ssh *header)
+int _prompt(ssh *header)
 {
 	ssize_t aux_read = 1, aux_write = 0;
 	char buffer[LEN_BUFFER] = "\0";
 	size_t bytes = LEN_BUFFER;
-	int HANDLE_SIGNAL = 1;
+	int HANDLE_SIGNAL = 1, status = 0;
 
 	signal(SIGINT, handle_signal);
 	while (aux_read && HANDLE_SIGNAL)
@@ -39,7 +39,7 @@ void _prompt(ssh *header)
 		if (aux_read)
 		{
 			_perror(aux_read, header->argv[0]);
-			_execve(header);
+			status = _execve(header);
 		}
 		free_malloc(header->arguments), free(header->buffer);
 		free_commands(header), header->buffer = NULL;
@@ -47,6 +47,7 @@ void _prompt(ssh *header)
 	if (isatty(STDIN_FILENO) == 1)
 		write(STDOUT_FILENO, "\n", 1);
 	free(header->OLD_WD);
+	return (status);
 }
 /**
  * set_struct - inicialization variables structure.
@@ -64,7 +65,6 @@ ssh *set_struct(ssh *header, char **argv, char **envp)
 	header->OLD_WD = NULL;
 	header->head = NULL;
 	header->head_cmd = NULL;
-	header->flag_exit = 0;
 	return (header);
 }
 /**
@@ -99,24 +99,17 @@ void free_PWD(ssh *header)
 int main(int argc, char **argv, char **envp)
 {
 	ssh *header = NULL;
+	int status = 0;
 
 	if (argc != 1)
 		_error("Error: usage ./hsh - too many arguments");
 	header = malloc(sizeof(ssh)); /*DO VALIDATION*/
 	header = set_struct(header, argv, envp);
-	_prompt(header);
+	status = _prompt(header);
 	free_PWD(header);
 	free_listint(header->head);
 	free_commands(header);
+	free(header);
 
-	if (header->flag_exit == 1)
-	{
-		free(header);
-		return (2);
-	}
-	else
-	{
-		free(header);
-		return (EXIT_SUCCESS);
-	}
+	return (status);
 }

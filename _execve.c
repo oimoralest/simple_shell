@@ -59,7 +59,7 @@ void super_free(ssh *header, char *pathname)
  * @header: struct pointer.
  * Return: void
  */
-void _execve(ssh *header)
+int _execve(ssh *header)
 {
 	pid_t aux_fork = 0;
 	int auxexe = 0, aux_wait = 0, status_wait = 0, aux_check = 0, i = 0;
@@ -88,14 +88,16 @@ void _execve(ssh *header)
 					aux->split_command, header->envp);
 				if (auxexe == -1)
 				{
-					printf("%s: command %s not found\n",
+					_printf("%s: command %s not found\n",
 						header->argv[0],
 						aux->split_command[0]);
 					super_free(header, pathname);
-					exit(EXIT_FAILURE);
+					exit(errno);
 				}
 			}
 		}
-		aux = aux->next, i++;
+		aux = aux->next, i++, status_wait = aux_check == 0 ? 0 :
+		WEXITSTATUS(status_wait);
 	}
+	return (status_wait == 2 ? 127 : status_wait);
 }

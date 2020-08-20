@@ -85,16 +85,15 @@ int exit_(ssh *header, char *aux, char **aux2)
 
 	copy = str_cpy(copy, header->buffer, str_len(header->buffer));
 	token = str_tok(copy, " \n\t\r\b\v\f");
-	if (token[1]) /*check if token 1 is a string with no digits */
+	if (token[1])
 	{
-		flag_char = check_exit(token[1]);
 		EXIT_STATUS = _atoi(token[1]);
-		if (EXIT_STATUS < 0 || flag_char == 1)
+		flag_char = check_exit(token[1]);
+		if (flag_char == 1)
 		{
-			printf("%s: exit: Illegal number: %i\n",
-				header->argv[0], EXIT_STATUS);
+			_printf("%s: exit: Illegal number: %s\n",
+				header->argv[0], token[1]);
 			free_malloc(token), free(copy);
-			header->flag_exit = 1;
 			return (0);
 		}
 	}
@@ -116,8 +115,11 @@ int _env(ssh *header)
 
 	copy = str_cpy(copy, header->buffer, str_len(header->buffer));
 	token = str_tok(copy, " \n\t\r\b\v\f");
-	while (header->envp[i])
-		printf("%s\n", header->envp[i]), i++;
+	if (token[1] == NULL)
+	{
+		while (header->envp[i])
+			_printf("%s\n", header->envp[i]), i++;
+	}
 	free_malloc(token), free(copy);
 
 	return (0);
