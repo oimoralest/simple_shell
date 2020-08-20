@@ -37,7 +37,7 @@ Simple Shell is a simple implementation of the UNIX command interpreter project 
 | PATH.c | contain functions search command in the PATH	|
 | simple_shell.c | contain Main functions |
 | str_tok.c | contain function split buffer and aux |
-| _atoi.c|  | convert string in a number |
+| _atoi.c | convert string in a number |
 | _cd.c | Function change directory |
 | _execve.c| execute commnads with fork |
 | buffer.c | works in buffer |
@@ -97,5 +97,5 @@ $ /bin/pwd
 ```
 
 ## Authors
-OSCAR MORALES
+OSCAR MORALES &
 LUIS CARVAJAL
